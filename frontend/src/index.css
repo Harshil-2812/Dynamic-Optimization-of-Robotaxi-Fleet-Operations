@@ -1,0 +1,307 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&display=swap');
+@import 'leaflet/dist/leaflet.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS Variables ───────────────────────────────────────────────────────── */
+:root {
+  --cyan: #00F5FF;
+  --green: #39FF14;
+  --amber: #F59E0B;
+  --dark: #050A0F;
+}
+
+/* ── Global resets ───────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--dark);
+  color: white;
+  font-family: 'Share Tech Mono', monospace;
+  overflow: hidden;
+}
+
+#root {
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Fonts ───────────────────────────────────────────────────────────────── */
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif !important;
+}
+
+.font-mono-cyber {
+  font-family: 'Share Tech Mono', monospace !important;
+}
+
+/* ── Cyan scrollbars ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050A0F;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 245, 255, 0.35);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 245, 255, 0.7);
+}
+
+/* ── Glassmorphism helper ────────────────────────────────────────────────── */
+.glass-panel {
+  background: rgba(0, 8, 18, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(0, 245, 255, 0.2);
+  box-shadow: 0 0 24px rgba(0, 245, 255, 0.06), inset 0 0 16px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Glow helpers ────────────────────────────────────────────────────────── */
+.glow-cyan {
+  box-shadow: 0 0 16px rgba(0, 245, 255, 0.5), 0 0 32px rgba(0, 245, 255, 0.15);
+}
+
+.glow-green {
+  box-shadow: 0 0 16px rgba(57, 255, 20, 0.5), 0 0 32px rgba(57, 255, 20, 0.15);
+}
+
+/* ── Animated gradient border ────────────────────────────────────────────── */
+.gradient-border {
+  position: relative;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(90deg, var(--cyan), var(--green), var(--cyan));
+  background-size: 200% 100%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: borderCycle 4s linear infinite;
+  pointer-events: none;
+}
+
+/* ── @keyframes ──────────────────────────────────────────────────────────── */
+
+@keyframes borderCycle {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes glow-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(0, 245, 255, 0.4);
+  }
+
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 24px rgba(0, 245, 255, 0.9);
+  }
+}
+
+@keyframes dashflow {
+  from {
+    stroke-dashoffset: 20;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes passenger-pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.35;
+  }
+
+  50% {
+    transform: scale(1.5);
+    opacity: 0.1;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes metro-train {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -500;
+  }
+}
+
+@keyframes node-rush-pulse {
+
+  0%,
+  100% {
+    r: 10;
+  }
+
+  50% {
+    r: 13;
+  }
+}
+
+@keyframes value-flash {
+  0% {
+    color: white;
+  }
+
+  40% {
+    color: var(--cyan);
+    text-shadow: 0 0 10px var(--cyan);
+  }
+
+  100% {
+    color: inherit;
+  }
+}
+
+/* ── Utility classes ─────────────────────────────────────────────────────── */
+.blink {
+  animation: blink 1s step-end infinite;
+}
+
+.route-trail {
+  stroke-dasharray: 6 4;
+  animation: dashflow 0.8s linear infinite;
+}
+
+.metro-train {
+  stroke-dasharray: 14 486;
+  animation: metro-train 8s linear infinite;
+}
+
+.value-flash {
+  animation: value-flash 0.6s ease-out;
+}
+
+.passenger-pulse {
+  animation: passenger-pulse 1.4s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.marquee-inner {
+  display: inline-flex;
+  gap: 4rem;
+  white-space: nowrap;
+  animation: marquee 28s linear infinite;
+}
+
+/* ── Leaflet overrides (dark theme) ──────────────────────────────────────── */
+.leaflet-container {
+  background: #050A0F !important;
+}
+
+.leaflet-control-zoom a {
+  background: rgba(0, 8, 18, 0.85) !important;
+  border-color: rgba(0, 245, 255, 0.25) !important;
+  color: var(--cyan) !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: rgba(0, 245, 255, 0.15) !important;
+}
+
+.leaflet-control-attribution {
+  background: rgba(0, 0, 0, 0.5) !important;
+  color: #475569 !important;
+  font-size: 9px !important;
+}
+
+.leaflet-control-attribution a {
+  color: #64748b !important;
+}
+
+/* SVG overlay — enable pointer events for node clicks */
+.leaflet-overlay-pane svg {
+  pointer-events: none;
+}
+
+.leaflet-overlay-pane svg .node-group {
+  pointer-events: all;
+}
+
+/* ── Donut ring transition ────────────────────────────────────────────────── */
+.donut-arc {
+  transition: stroke-dasharray 1s ease, stroke-dashoffset 1s ease;
+}
+
+/* ── Range input ─────────────────────────────────────────────────────────── */
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--cyan);
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(0, 245, 255, 0.6);
+}
